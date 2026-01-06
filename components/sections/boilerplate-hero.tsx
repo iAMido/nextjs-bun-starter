@@ -65,7 +65,7 @@ export function BoilerplateHero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] text-sm font-medium text-white/90 mb-6"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1C1C1E]/80 dark:bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-sm font-medium text-white mb-6"
         >
           <Rocket className="w-4 h-4 text-[#FF4D8E]" />
           Production-Ready Boilerplate
