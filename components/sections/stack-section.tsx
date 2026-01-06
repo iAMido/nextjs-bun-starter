@@ -15,14 +15,17 @@ export function StackSection() {
           </p>
         </div>
 
-        <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-border/50">
-          <Image
-            src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg"
-            alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui"
-            fill
-            className="object-cover"
-            priority
-          />
+        <div className="flex justify-center">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border/50 max-w-md">
+            <Image
+              src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg"
+              alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui"
+              width={400}
+              height={800}
+              className="w-full h-auto"
+              priority
+            />
+          </div>
         </div>
       </div>
     </section>
