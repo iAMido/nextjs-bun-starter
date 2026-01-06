@@ -14,20 +14,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js + Bun Starter | Production-Ready Boilerplate",
-  description: "The ultimate Next.js starter kit with Bun, Shadcn/ui, Tailwind CSS, and Google Authentication. Built by Yuval Avidani, founder of YUV.AI. Ship faster with this production-ready boilerplate.",
-  keywords: ["Next.js", "Bun", "Shadcn", "Tailwind CSS", "Google Auth", "NextAuth", "Boilerplate", "Starter Kit", "React", "TypeScript"],
+  title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
+  description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers to create transformative experiences. AWS AI Superstar, GitHub Star, Founder of YUV.AI Community.",
+  keywords: ["Yuval Avidani", "YUV.AI", "AI Builder", "AI Speaker", "Machine Learning", "Developer", "AWS AI Superstar", "GitHub Star"],
   authors: [{ name: "Yuval Avidani", url: "https://yuv.ai" }],
   openGraph: {
-    title: "Next.js + Bun Starter | Production-Ready Boilerplate",
-    description: "Stop wasting time on setup. Start building with Bun (30x faster than npm), Next.js 16, Shadcn/ui, and Google Auth - all pre-configured.",
+    title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
+    description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers to create transformative experiences.",
     type: "website",
+    url: "https://yuv.ai",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Next.js + Bun Starter | Production-Ready Boilerplate",
-    description: "Stop wasting time on setup. Start building with Bun (30x faster than npm), Next.js 16, Shadcn/ui, and Google Auth.",
-    creator: "@yuvalav",
+    title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
+    description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers.",
+    creator: "@yuvai",
   },
 };
 
