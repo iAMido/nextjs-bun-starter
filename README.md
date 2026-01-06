@@ -17,6 +17,8 @@
 
 **Install in seconds:** `bun create yuv-bun-app my-project`
 
+> 💡 **Looking for Clerk authentication instead?** Check out [`create-yuv-app`](https://www.npmjs.com/package/create-yuv-app) — the same stack with Clerk instead of NextAuth.
+
 [Live Demo](https://nextjs-bun-starter.vercel.app) | [npm Package](https://www.npmjs.com/package/create-yuv-bun-app) | [Report Bug](https://github.com/hoodini/nextjs-bun-starter/issues)
 
 <img src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg" alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui" width="400">
@@ -94,6 +96,12 @@ npm create yuv-bun-app my-project   # Also works
 pnpm create yuv-bun-app my-project  # Also works
 yarn create yuv-bun-app my-project  # Also works
 ```
+
+> **📦 About the Package Names**  
+> - **`create-yuv-bun-app`** → This boilerplate (Next.js + Bun + NextAuth/Google OAuth)
+> - **`create-yuv-app`** → Alternative version (Next.js + Clerk authentication)
+> 
+> Choose the one that fits your authentication needs!
 
 ### Manual Installation
 
