@@ -6,16 +6,16 @@ import { ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react';
 import { getAllPosts } from '@/lib/blog';
 
 const categoryColors: Record<string, string> = {
-  Engineering: '#FF4D8E',
-  Design: '#00C2FF',
-  Framework: '#FF9100',
+  Engineering: '#2563EB',
+  Design: '#10B981',
+  Framework: '#0EA5E9',
 };
 
 export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#FFF5F8] via-background to-background dark:from-[#1C1C1E] dark:via-[#1C1C1E] dark:to-[#1C1C1E]">
+    <main className="min-h-screen bg-gradient-to-b from-[#F0F9FF] via-background to-background dark:from-[#1C1C1E] dark:via-[#1C1C1E] dark:to-[#1C1C1E]">
       {/* Back to Home */}
       <div className="container mx-auto px-4 md:px-6 pt-24 md:pt-28">
         <Link
@@ -59,7 +59,7 @@ export default function BlogPage() {
                   <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-3 md:mb-4">
                     <span
                       className="px-2 md:px-3 py-1 rounded-full text-xs font-medium text-white"
-                      style={{ backgroundColor: categoryColors[post.category] || '#FF4D8E' }}
+                      style={{ backgroundColor: categoryColors[post.category] || '#2563EB' }}
                     >
                       {post.category}
                     </span>
@@ -70,7 +70,7 @@ export default function BlogPage() {
                   </div>
 
                   {/* Title */}
-                  <h2 className="text-lg md:text-xl font-semibold text-foreground mb-2 md:mb-3 group-hover:text-[#FF4D8E] transition-colors">
+                  <h2 className="text-lg md:text-xl font-semibold text-foreground mb-2 md:mb-3 group-hover:text-[#2563EB] transition-colors">
                     {post.title}
                   </h2>
 
@@ -85,7 +85,7 @@ export default function BlogPage() {
                       <Calendar className="w-3 h-3" />
                       {post.date}
                     </span>
-                    <span className="flex items-center gap-1 text-xs md:text-sm font-medium text-[#FF4D8E] group-hover:gap-2 transition-all">
+                    <span className="flex items-center gap-1 text-xs md:text-sm font-medium text-[#2563EB] group-hover:gap-2 transition-all">
                       Read article
                       <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </span>

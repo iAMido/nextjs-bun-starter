@@ -201,7 +201,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
       {/* Reading Progress Bar - Fixed at very top */}
       <div className="fixed top-0 left-0 right-0 z-[200] h-1 bg-gray-200/50 dark:bg-gray-800/50">
         <div
-          className="h-full bg-gradient-to-r from-[#FF4D8E] via-[#8B5CF6] to-[#00C2FF] transition-all duration-100 ease-out"
+          className="h-full bg-gradient-to-r from-[#2563EB] via-[#10B981] to-[#0EA5E9] transition-all duration-100 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -221,7 +221,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
           {/* Article Header */}
           <header className="mb-8 md:mb-12">
             <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4 md:mb-6">
-              <span className="text-xs md:text-sm font-medium px-2 md:px-3 py-1 rounded-full bg-[#FF4D8E]/10 text-[#FF4D8E]">
+              <span className="text-xs md:text-sm font-medium px-2 md:px-3 py-1 rounded-full bg-[#2563EB]/10 text-[#2563EB]">
                 {post.category}
               </span>
               <span className="text-xs md:text-sm text-muted-foreground">
@@ -243,8 +243,8 @@ export function ArticleContent({ post }: ArticleContentProps) {
             {/* Author + Listen Button - stack on small mobile */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 md:pb-8 border-b border-border">
               <div className="flex items-center gap-3 md:gap-4">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#FF4D8E] to-[#8B5CF6] flex items-center justify-center text-white font-semibold text-sm md:text-base overflow-hidden">
-                  <span>YA</span>
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-[#2563EB] to-[#10B981] flex items-center justify-center text-white font-semibold text-sm md:text-base overflow-hidden">
+                  <span>IM</span>
                 </div>
                 <div>
                   <p className="font-medium text-foreground text-sm md:text-base">{post.author.name}</p>
@@ -256,7 +256,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
               {ttsSupported && !showPlayer && (
                 <button
                   onClick={handlePlay}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 rounded-full bg-[#FF4D8E] text-white hover:bg-[#FF4D8E]/90 transition-colors shadow-lg shadow-[#FF4D8E]/25"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 md:px-5 py-2.5 rounded-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors shadow-lg shadow-[#2563EB]/25"
                 >
                   <Volume2 className="w-4 h-4" />
                   <span className="text-sm font-medium">Listen</span>
@@ -307,15 +307,15 @@ export function ArticleContent({ post }: ArticleContentProps) {
               [&>p:first-of-type]:mb-6
               md:[&>p:first-of-type]:mb-8
 
-              prose-a:text-[#FF4D8E]
+              prose-a:text-[#2563EB]
               prose-a:no-underline
               hover:prose-a:underline
 
               prose-strong:text-foreground
               prose-strong:font-semibold
 
-              prose-code:text-[#FF4D8E]
-              prose-code:bg-[#FF4D8E]/10
+              prose-code:text-[#2563EB]
+              prose-code:bg-[#2563EB]/10
               prose-code:px-1
               md:prose-code:px-1.5
               prose-code:py-0.5
@@ -336,9 +336,9 @@ export function ArticleContent({ post }: ArticleContentProps) {
               prose-pre:text-xs
               md:prose-pre:text-sm
 
-              prose-blockquote:border-l-[#FF4D8E]
+              prose-blockquote:border-l-[#2563EB]
               prose-blockquote:border-l-4
-              prose-blockquote:bg-[#FF4D8E]/5
+              prose-blockquote:bg-[#2563EB]/5
               prose-blockquote:py-3
               md:prose-blockquote:py-4
               prose-blockquote:px-4
@@ -370,7 +370,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
           <footer className="mt-12 md:mt-16 pt-6 md:pt-8 border-t border-border">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm md:text-base text-[#FF4D8E] hover:underline font-medium"
+              className="inline-flex items-center gap-2 text-sm md:text-base text-[#2563EB] hover:underline font-medium"
             >
               <ArrowLeft className="w-4 h-4" />
               More articles
@@ -385,7 +385,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
           {/* TTS Progress Bar */}
           <div className="h-1 bg-gray-200 dark:bg-gray-800 cursor-pointer">
             <div
-              className="h-full bg-[#FF4D8E] transition-all duration-300"
+              className="h-full bg-[#2563EB] transition-all duration-300"
               style={{ width: `${ttsProgress}%` }}
             />
           </div>
@@ -407,7 +407,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
             <div className="flex items-center justify-between gap-2 md:gap-4 max-w-4xl mx-auto">
               {/* Left: Track Info - hide text on very small screens */}
               <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF4D8E] to-[#8B5CF6] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#10B981] flex items-center justify-center flex-shrink-0">
                   <Volume2 className="w-5 h-5 text-white" />
                 </div>
                 <div className="min-w-0 hidden sm:block">
@@ -430,7 +430,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
 
                 <button
                   onClick={isPlaying ? handlePause : handlePlay}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#FF4D8E] text-white flex items-center justify-center hover:bg-[#FF4D8E]/90 transition-colors shadow-lg"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#2563EB] text-white flex items-center justify-center hover:bg-[#2563EB]/90 transition-colors shadow-lg"
                 >
                   {isPlaying ? (
                     <Pause className="w-4 h-4 md:w-5 md:h-5" />
@@ -454,7 +454,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
                 <div className="relative">
                   <button
                     onClick={() => setShowSettings(!showSettings)}
-                    className={`p-1.5 md:p-2 rounded-full transition-colors ${showSettings ? 'bg-[#FF4D8E]/10 text-[#FF4D8E]' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`p-1.5 md:p-2 rounded-full transition-colors ${showSettings ? 'bg-[#2563EB]/10 text-[#2563EB]' : 'text-muted-foreground hover:text-foreground'}`}
                     title="Settings"
                   >
                     <Settings className="w-4 h-4 md:w-5 md:h-5" />
@@ -477,7 +477,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
                       <div className="mb-4 md:mb-5">
                         <label className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3 flex items-center justify-between">
                           <span>Speed</span>
-                          <span className="text-[#FF4D8E]">{speed}x</span>
+                          <span className="text-[#2563EB]">{speed}x</span>
                         </label>
                         <input
                           type="range"
@@ -489,7 +489,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
                             const newSpeed = parseFloat(e.target.value);
                             setSpeed(newSpeed);
                           }}
-                          className="w-full h-2 bg-gray-200 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-[#FF4D8E]"
+                          className="w-full h-2 bg-gray-200 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-[#2563EB]"
                         />
                         <div className="flex justify-between text-xs text-muted-foreground mt-1 md:mt-2">
                           <span>0.5x</span>
@@ -511,7 +511,7 @@ export function ArticleContent({ post }: ArticleContentProps) {
                               const voice = voices.find(v => v.name === e.target.value);
                               setSelectedVoice(voice || null);
                             }}
-                            className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-gray-100 dark:bg-white/10 border-0 text-foreground text-xs md:text-sm focus:ring-2 focus:ring-[#FF4D8E] cursor-pointer"
+                            className="w-full p-2 md:p-2.5 rounded-lg md:rounded-xl bg-gray-100 dark:bg-white/10 border-0 text-foreground text-xs md:text-sm focus:ring-2 focus:ring-[#2563EB] cursor-pointer"
                           >
                             {voices.map((voice) => (
                               <option key={voice.name} value={voice.name}>
