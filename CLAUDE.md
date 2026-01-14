@@ -357,6 +357,111 @@ bun run build && bun run start
 ```
 Test on `http://localhost:3000` to ensure everything works.
 
+## Future Roadmap
+
+> **Full Blueprint:** `C:\Users\ido\my_site\developer_blueprint.md`
+
+### Project Vision
+Transform this portfolio into a full-featured site with an AI Running Coach sub-app.
+
+### Current Status (Phase 2 - DONE)
+- ✅ CV/Portfolio homepage with anchor navigation
+- ✅ Blog system with TTS (static posts in `lib/blog.ts`)
+- ✅ NextAuth with Google OAuth
+- ✅ Theme toggle (dark/light mode)
+- ✅ Responsive design with mobile menu
+- ✅ Footer with correct social links
+- ✅ Scroll-to-top button (blue/green gradient)
+
+### Pending Tasks
+- 🔄 Update blog colors to match CV theme (blue/green instead of pink/orange)
+
+### Future Phases
+
+#### Phase 2.5: Blog System Enhancement
+- Connect blog to PostgreSQL database (Prisma)
+- Add admin panel for blog CRUD
+- Keep existing TTS player and glassmorphism cards
+
+#### Phase 3: AI Running Coach (`/coach`)
+Protected route with:
+- Dashboard with stats
+- Training plan generator
+- Weekly review
+- Ask Coach (Q&A with Claude via OpenRouter)
+- Grocky Balboa (second opinion with Grok)
+- Strava sync
+
+**Components to create:**
+```
+app/coach/
+├── layout.tsx          # Protected layout with sidebar
+├── page.tsx            # Dashboard
+├── plan/page.tsx       # Training plan
+├── review/page.tsx     # Weekly review
+├── ask/page.tsx        # Q&A chat
+├── grocky/page.tsx     # Second opinion
+├── sync/page.tsx       # Strava sync
+└── settings/page.tsx   # User settings
+
+components/coach/
+├── sidebar.tsx
+├── dashboard-stats.tsx
+├── run-table.tsx
+├── plan-display.tsx
+├── chat-interface.tsx  # Reusable for Q&A and Grocky
+└── strava-connect.tsx
+```
+
+#### Phase 4: Database & API
+- PostgreSQL with Prisma ORM
+- Tables: runs, training_plans, athlete_profile, weekly_feedback, strava_account
+- Blog tables: blog_posts, blog_categories, blog_tags
+
+#### Phase 5: AI Integration
+- OpenRouter API client (`lib/ai/openrouter.ts`)
+- Claude for main coach logic
+- Grok for Grocky Balboa second opinion
+- Port prompts from existing Streamlit app
+
+#### Phase 6: Strava Integration
+- OAuth flow for Strava connection
+- Sync runs from Strava API
+- Store in database with HR zone data
+
+#### Phase 7: Deployment
+- Vercel deployment
+- Supabase/Neon for PostgreSQL
+- Environment variables for all services
+
+### Environment Variables (Future)
+```bash
+# Current
+NEXTAUTH_SECRET, NEXTAUTH_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+
+# Future additions
+DATABASE_URL="postgresql://..."
+OPENROUTER_API_KEY="..."
+STRAVA_CLIENT_ID="..."
+STRAVA_CLIENT_SECRET="..."
+```
+
+### API Endpoints (Future)
+| Route | Description |
+|-------|-------------|
+| `/api/coach/plan` | Training plan CRUD |
+| `/api/coach/chat` | Q&A with Claude |
+| `/api/coach/grocky` | Second opinion with Grok |
+| `/api/coach/runs` | Run data CRUD |
+| `/api/strava/*` | Strava OAuth & sync |
+| `/api/blog/admin/*` | Blog CRUD (admin only) |
+
+### Design Consistency
+- **Primary color:** `#2563EB` (blue)
+- **Accent color:** `#10B981` (green)
+- **Gradient:** `linear-gradient(90deg, #2563EB, #10B981)`
+- All new features should use this color scheme
+
 ## Repository Information
 
 **Repository:** https://github.com/iAMido/my-site
