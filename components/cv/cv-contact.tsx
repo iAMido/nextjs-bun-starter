@@ -12,6 +12,9 @@ export function CVContact() {
       <div className="cv-section-content">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+              Get in touch
+            </h3>
             <a
               href={`tel:${contact.phone}`}
               className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
