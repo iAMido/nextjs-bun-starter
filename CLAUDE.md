@@ -374,7 +374,7 @@ Transform this portfolio into a full-featured site with an AI Running Coach sub-
 - ✅ Scroll-to-top button (blue/green gradient)
 
 ### Pending Tasks
-- 🔄 Update blog colors to match CV theme (blue/green instead of pink/orange)
+- ✅ ~~Update blog colors to match CV theme (blue/green instead of pink/orange)~~ - DONE
 
 ### Future Phases
 
