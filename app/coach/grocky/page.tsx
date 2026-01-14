@@ -1,0 +1,277 @@
+'use client';
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Dumbbell, Send, Trash2, User, Bot, FileSearch } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import type { ChatMessage } from '@/lib/db/types';
+
+export default function GrockyBalboaPage() {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [planReview, setPlanReview] = useState<string | null>(null);
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
+
+    const userMessage: ChatMessage = { role: 'user', content: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      // TODO: Call Grok API via OpenRouter
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      const assistantMessage: ChatMessage = {
+        role: 'assistant',
+        content: 'Yo, this is where Grocky\'s response will appear once OpenRouter is configured with Grok. I\'ll give you the straight talk about your training - no sugar coating, just science-backed advice with maybe a few Rocky references thrown in. 🥊',
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Failed to get response:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePlanReview = async () => {
+    setReviewLoading(true);
+    try {
+      // TODO: Call Grok plan review API
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setPlanReview(
+        'Plan review will appear here once configured. Grocky will analyze your training plan and provide an evidence-based second opinion, challenging assumptions and offering alternative perspectives from the Norwegian Method, block periodization, and other training philosophies.'
+      );
+    } catch (error) {
+      console.error('Failed to review plan:', error);
+    } finally {
+      setReviewLoading(false);
+    }
+  };
+
+  const handleClearChat = () => {
+    setMessages([]);
+  };
+
+  const handleClearReview = () => {
+    setPlanReview(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+          <span className="text-4xl">🥊</span>
+          Grocky Balboa
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Your analytical second opinion, powered by Grok. No punches pulled.
+        </p>
+      </div>
+
+      <Tabs defaultValue="chat" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="chat">Chat with Grocky</TabsTrigger>
+          <TabsTrigger value="review">Plan Review</TabsTrigger>
+        </TabsList>
+
+        {/* Chat Tab */}
+        <TabsContent value="chat" className="h-[calc(100vh-16rem)]">
+          <Card className="h-full flex flex-col">
+            <CardHeader className="border-b flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                    <Dumbbell className="w-4 h-4 text-white" />
+                  </div>
+                  Grocky Balboa
+                </CardTitle>
+                <CardDescription>
+                  Training science, no BS. Ask about alternative approaches.
+                </CardDescription>
+              </div>
+              {messages.length > 0 && (
+                <Button variant="outline" size="sm" onClick={handleClearChat}>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Clear
+                </Button>
+              )}
+            </CardHeader>
+
+            <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.length === 0 ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="text-center text-muted-foreground">
+                    <Dumbbell className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Ready to give you the straight talk.</p>
+                    <p className="text-sm mt-2">Ask about:</p>
+                    <div className="mt-4 space-y-2 max-w-md mx-auto">
+                      {[
+                        'What does the Norwegian Method say about my training?',
+                        'Should I do more threshold work?',
+                        'Am I overtraining or undertraining?',
+                        'How would you structure my training differently?',
+                      ].map((example) => (
+                        <button
+                          key={example}
+                          onClick={() => setInput(example)}
+                          className="block w-full text-sm px-4 py-2 rounded-lg bg-accent hover:bg-accent/80 transition-colors text-left"
+                        >
+                          {example}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {messages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`flex gap-3 ${
+                        message.role === 'user' ? 'justify-end' : 'justify-start'
+                      }`}
+                    >
+                      {message.role === 'assistant' && (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0">
+                          <Dumbbell className="w-4 h-4 text-white" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                          message.role === 'user'
+                            ? 'bg-orange-500 text-white'
+                            : 'bg-accent'
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                      </div>
+                      {message.role === 'user' && (
+                        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                          <User className="w-4 h-4" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {loading && (
+                    <div className="flex gap-3 justify-start">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0">
+                        <Dumbbell className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="bg-accent rounded-2xl px-4 py-3">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </>
+              )}
+            </CardContent>
+
+            {/* Input Area */}
+            <div className="border-t p-4">
+              <div className="flex gap-2">
+                <Textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask Grocky..."
+                  rows={1}
+                  className="resize-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSend();
+                    }
+                  }}
+                />
+                <Button
+                  onClick={handleSend}
+                  disabled={!input.trim() || loading}
+                  className="bg-gradient-to-r from-orange-500 to-red-500 text-white shrink-0"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+
+        {/* Plan Review Tab */}
+        <TabsContent value="review">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <FileSearch className="w-5 h-5" />
+                  Training Plan Review
+                </CardTitle>
+                <CardDescription>
+                  Get Grocky&apos;s comprehensive analysis of your current training plan.
+                </CardDescription>
+              </div>
+              {planReview && (
+                <Button variant="outline" size="sm" onClick={handleClearReview}>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Clear
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {!planReview && !reviewLoading && (
+                <div className="text-center py-8">
+                  <FileSearch className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <p className="text-muted-foreground mb-4">
+                    Get an evidence-based second opinion on your training plan.
+                  </p>
+                  <Button
+                    onClick={handlePlanReview}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 text-white"
+                  >
+                    <Dumbbell className="w-4 h-4 mr-2" />
+                    Review My Plan
+                  </Button>
+                </div>
+              )}
+
+              {reviewLoading && (
+                <div className="space-y-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-4 w-2/3" />
+                  <Skeleton className="h-4 w-4/5" />
+                </div>
+              )}
+
+              {planReview && (
+                <div className="prose dark:prose-invert max-w-none">
+                  <p>{planReview}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

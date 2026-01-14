@@ -59,6 +59,17 @@ app/
 │   ├── page.tsx                  # Blog listing (client component)
 │   ├── [slug]/page.tsx           # Article page (server component with SSG)
 │   └── layout.tsx                # Blog section layout
+├── coach/                        # AI Running Coach (protected)
+│   ├── layout.tsx                # Protected layout with sidebar
+│   ├── page.tsx                  # Dashboard
+│   ├── log/page.tsx              # Log runs with feedback
+│   ├── review/page.tsx           # Weekly review with AI analysis
+│   ├── plan/page.tsx             # Training plan generation
+│   ├── ask/page.tsx              # Ask Coach (Claude chat)
+│   ├── grocky/page.tsx           # Grocky Balboa (Grok second opinion)
+│   ├── strava/page.tsx           # Strava sync
+│   ├── strava/callback/page.tsx  # Strava OAuth callback
+│   └── settings/page.tsx         # User settings
 └── profile/page.tsx              # Protected route (requires auth)
 
 components/
@@ -73,8 +84,10 @@ components/
 │   └── cv-sidebar.tsx            # Fixed sidebar (desktop only)
 ├── blog/
 │   └── article-content.tsx       # Article with TTS player (client component)
+├── coach/
+│   └── sidebar.tsx               # Coach section sidebar navigation
 ├── layout/
-│   ├── navbar.tsx                # Site navbar (for blog/profile)
+│   ├── navbar.tsx                # Site navbar (for blog/profile/coach)
 │   └── footer.tsx                # Site footer
 └── ui/                           # shadcn/ui components
     ├── button.tsx                # CVA-based button variants
@@ -84,7 +97,22 @@ components/
 lib/
 ├── cv-data.ts                    # CV content data (TypeScript interfaces)
 ├── blog.ts                       # Blog data layer (getAllPosts, getPostBySlug)
-└── utils.ts                      # Utility functions (cn for className merging)
+├── utils.ts                      # Utility functions (cn for className merging)
+├── db/                           # Database layer (Supabase)
+│   ├── supabase.ts               # Supabase client
+│   ├── types.ts                  # TypeScript types for all tables
+│   ├── runs.ts                   # Runs CRUD operations
+│   ├── plans.ts                  # Training plans CRUD
+│   ├── profile.ts                # Athlete profile CRUD
+│   └── feedback.ts               # Run feedback & weekly summaries
+├── ai/                           # AI integration (OpenRouter)
+│   ├── openrouter.ts             # OpenRouter API client
+│   ├── coach-prompts.ts          # Claude coach system prompts
+│   └── grocky-prompts.ts         # Grok (Grocky) system prompts
+└── utils/                        # Utility functions
+    ├── trimp.ts                  # Training load calculation
+    ├── pace.ts                   # Pace formatting/conversion
+    └── run-classifier.ts         # Run type classification
 ```
 
 ### Path Aliases

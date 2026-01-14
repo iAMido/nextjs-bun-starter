@@ -1,0 +1,164 @@
+import { supabase } from './supabase';
+import type { Run } from './types';
+
+/**
+ * Get all runs for a user, sorted by date descending
+ */
+export async function getUserRuns(userId: string, limit = 100): Promise<Run[]> {
+  const { data, error } = await supabase
+    .from('runs')
+    .select('*')
+    .eq('user_id', userId)
+    .order('date', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return data || [];
+}
+
+/**
+ * Get runs from the last N days
+ */
+export async function getRecentRuns(userId: string, days = 14): Promise<Run[]> {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  const { data, error } = await supabase
+    .from('runs')
+    .select('*')
+    .eq('user_id', userId)
+    .gte('date', startDate.toISOString())
+    .order('date', { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+/**
+ * Get a single run by ID
+ */
+export async function getRunById(runId: string): Promise<Run | null> {
+  const { data, error } = await supabase
+    .from('runs')
+    .select('*')
+    .eq('id', runId)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Create a new run
+ */
+export async function createRun(run: Omit<Run, 'id' | 'created_at'>): Promise<Run> {
+  const { data, error } = await supabase
+    .from('runs')
+    .insert(run)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Update a run
+ */
+export async function updateRun(runId: string, updates: Partial<Run>): Promise<Run> {
+  const { data, error } = await supabase
+    .from('runs')
+    .update(updates)
+    .eq('id', runId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Delete a run
+ */
+export async function deleteRun(runId: string): Promise<void> {
+  const { error } = await supabase
+    .from('runs')
+    .delete()
+    .eq('id', runId);
+
+  if (error) throw error;
+}
+
+/**
+ * Get total distance for a user
+ */
+export async function getTotalDistance(userId: string): Promise<number> {
+  const { data, error } = await supabase
+    .from('runs')
+    .select('distance_km')
+    .eq('user_id', userId);
+
+  if (error) throw error;
+  return (data || []).reduce((sum, run) => sum + (run.distance_km || 0), 0);
+}
+
+/**
+ * Get this week's runs and stats
+ */
+export async function getThisWeekStats(userId: string): Promise<{ runs: Run[]; totalKm: number }> {
+  // Get Monday of current week
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  monday.setHours(0, 0, 0, 0);
+
+  const { data, error } = await supabase
+    .from('runs')
+    .select('*')
+    .eq('user_id', userId)
+    .gte('date', monday.toISOString())
+    .order('date', { ascending: false });
+
+  if (error) throw error;
+
+  const runs = data || [];
+  const totalKm = runs.reduce((sum, run) => sum + (run.distance_km || 0), 0);
+
+  return { runs, totalKm };
+}
+
+/**
+ * Get weekly volume for the last N weeks
+ */
+export async function getWeeklyVolume(userId: string, weeks = 12): Promise<{ week: string; km: number }[]> {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - weeks * 7);
+
+  const { data, error } = await supabase
+    .from('runs')
+    .select('date, distance_km')
+    .eq('user_id', userId)
+    .gte('date', startDate.toISOString())
+    .order('date', { ascending: true });
+
+  if (error) throw error;
+
+  // Group by week
+  const weeklyData: Record<string, number> = {};
+
+  (data || []).forEach((run) => {
+    const date = new Date(run.date);
+    const weekStart = new Date(date);
+    const dayOfWeek = weekStart.getDay();
+    weekStart.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+    const weekKey = weekStart.toISOString().split('T')[0];
+
+    weeklyData[weekKey] = (weeklyData[weekKey] || 0) + (run.distance_km || 0);
+  });
+
+  return Object.entries(weeklyData).map(([week, km]) => ({
+    week,
+    km: Math.round(km * 10) / 10,
+  }));
+}

@@ -21,6 +21,7 @@ const navLinks = [
   { href: '/#skills', label: 'Skills' },
   { href: '/#experience', label: 'Experience' },
   { href: '/blog', label: 'Blog' },
+  { href: '/coach', label: 'Coach' },
   { href: '/#contact', label: 'Contact' },
 ];
 
