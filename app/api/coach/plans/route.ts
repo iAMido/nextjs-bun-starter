@@ -1,0 +1,74 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { supabase } from '@/lib/db/supabase';
+
+export async function GET() {
+  const session = await getServerSession();
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const userId = session.user.email;
+
+  try {
+    const { data, error } = await supabase
+      .from('training_plans')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+
+    return NextResponse.json({ plan: data || null });
+  } catch (error) {
+    console.error('Error fetching plan:', error);
+    return NextResponse.json({ error: 'Failed to fetch plan' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  const session = await getServerSession();
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const userId = session.user.email;
+
+  try {
+    const body = await request.json();
+
+    // Deactivate existing plans
+    await supabase
+      .from('training_plans')
+      .update({ status: 'completed' })
+      .eq('user_id', userId)
+      .eq('status', 'active');
+
+    // Create new plan
+    const { data, error } = await supabase
+      .from('training_plans')
+      .insert({
+        user_id: userId,
+        plan_type: body.plan_type,
+        plan_json: body.plan_json,
+        duration_weeks: body.duration_weeks,
+        start_date: body.start_date || new Date().toISOString().split('T')[0],
+        current_week_num: 1,
+        status: 'active',
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ plan: data });
+  } catch (error) {
+    console.error('Error creating plan:', error);
+    return NextResponse.json({ error: 'Failed to create plan' }, { status: 500 });
+  }
+}
