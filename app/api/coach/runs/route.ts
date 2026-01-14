@@ -2,14 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { supabase } from '@/lib/db/supabase';
 
+// Default user for development when auth is not configured
+const DEV_USER_ID = 'dev@localhost';
+
 export async function GET(request: NextRequest) {
   const session = await getServerSession();
 
-  if (!session?.user?.email) {
+  // In development, allow access without auth
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!session?.user?.email && !isDev) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const userId = session.user.email;
+  const userId = session?.user?.email || DEV_USER_ID;
   const { searchParams } = new URL(request.url);
   const days = parseInt(searchParams.get('days') || '14');
   const limit = parseInt(searchParams.get('limit') || '100');
@@ -38,11 +43,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const session = await getServerSession();
 
-  if (!session?.user?.email) {
+  // In development, allow access without auth
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!session?.user?.email && !isDev) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const userId = session.user.email;
+  const userId = session?.user?.email || DEV_USER_ID;
 
   try {
     const body = await request.json();
