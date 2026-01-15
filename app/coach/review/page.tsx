@@ -173,49 +173,58 @@ export default function WeeklyReviewPage() {
             <CardDescription>How was your week overall?</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Overall Feeling */}
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <label className="text-sm font-medium">Overall Feeling</label>
-                <span className="text-sm text-muted-foreground">{overallFeeling[0]}/10</span>
-              </div>
-              <Slider
-                value={overallFeeling}
-                onValueChange={setOverallFeeling}
-                max={10}
-                min={1}
-                step={1}
-              />
-            </div>
+            {/* Sliders - 2 column layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                {/* Overall Feeling */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium">Overall Feeling</label>
+                    <span className="text-sm text-muted-foreground">{overallFeeling[0]}/10</span>
+                  </div>
+                  <Slider
+                    value={overallFeeling}
+                    onValueChange={setOverallFeeling}
+                    max={10}
+                    min={1}
+                    step={1}
+                  />
+                </div>
 
-            {/* Sleep Quality */}
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <label className="text-sm font-medium">Sleep Quality</label>
-                <span className="text-sm text-muted-foreground">{sleepQuality[0]}/10</span>
+                {/* Sleep Quality */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium">Sleep Quality</label>
+                    <span className="text-sm text-muted-foreground">{sleepQuality[0]}/10</span>
+                  </div>
+                  <Slider
+                    value={sleepQuality}
+                    onValueChange={setSleepQuality}
+                    max={10}
+                    min={1}
+                    step={1}
+                  />
+                </div>
               </div>
-              <Slider
-                value={sleepQuality}
-                onValueChange={setSleepQuality}
-                max={10}
-                min={1}
-                step={1}
-              />
-            </div>
 
-            {/* Stress Level */}
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <label className="text-sm font-medium">Stress Level</label>
-                <span className="text-sm text-muted-foreground">{stressLevel[0]}/10</span>
+              {/* Right Column */}
+              <div className="space-y-6">
+                {/* Stress Level */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium">Stress Level</label>
+                    <span className="text-sm text-muted-foreground">{stressLevel[0]}/10</span>
+                  </div>
+                  <Slider
+                    value={stressLevel}
+                    onValueChange={setStressLevel}
+                    max={10}
+                    min={1}
+                    step={1}
+                  />
+                </div>
               </div>
-              <Slider
-                value={stressLevel}
-                onValueChange={setStressLevel}
-                max={10}
-                min={1}
-                step={1}
-              />
             </div>
 
             {/* Injury Notes */}

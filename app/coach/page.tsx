@@ -3,9 +3,10 @@
 import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import { Activity, Timer, TrendingUp, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { DashboardStats, Run } from '@/lib/db/types';
+import type { DashboardStats, Run, TrainingPlan, PlanWeek, Workout } from '@/lib/db/types';
 
 function StatsCard({
   title,
@@ -48,14 +49,16 @@ export default function CoachDashboard() {
   const { data: session } = useSession();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentRuns, setRecentRuns] = useState<Run[]>([]);
+  const [activePlan, setActivePlan] = useState<TrainingPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsRes, runsRes] = await Promise.all([
+        const [statsRes, runsRes, planRes] = await Promise.all([
           fetch('/api/coach/stats'),
           fetch('/api/coach/runs?days=14&limit=10'),
+          fetch('/api/coach/plans'),
         ]);
 
         if (statsRes.ok) {
@@ -66,6 +69,11 @@ export default function CoachDashboard() {
         if (runsRes.ok) {
           const runsData = await runsRes.json();
           setRecentRuns(runsData.runs || []);
+        }
+
+        if (planRes.ok) {
+          const planData = await planRes.json();
+          setActivePlan(planData.plan || null);
         }
       } catch (error) {
         console.error('Failed to fetch data:', error);
@@ -83,6 +91,52 @@ export default function CoachDashboard() {
 
     fetchData();
   }, []);
+
+  // Get current week workouts from the plan
+  const getCurrentWeekWorkouts = (): Record<string, Workout> | null => {
+    if (!activePlan?.plan_json) return null;
+
+    const planJson = activePlan.plan_json;
+    const currentWeekNum = activePlan.current_week_num || 1;
+
+    // Find workouts from the weeks array
+    if (planJson.weeks && Array.isArray(planJson.weeks)) {
+      const currentWeek = planJson.weeks.find((w: PlanWeek) => w.week_number === currentWeekNum);
+      if (currentWeek?.workouts) {
+        return currentWeek.workouts;
+      }
+    }
+
+    // Fallback to current_week field
+    if (planJson.current_week) {
+      const cw = planJson.current_week;
+      if (cw.workouts) {
+        return cw.workouts;
+      }
+      // Check if current_week itself contains workouts directly
+      const firstVal = Object.values(cw)[0];
+      if (firstVal && typeof firstVal === 'object' && ('type' in firstVal || 'duration' in firstVal)) {
+        return cw as unknown as Record<string, Workout>;
+      }
+    }
+
+    return null;
+  };
+
+  const getCurrentWeekInfo = (): { phase: string; focus: string } | null => {
+    if (!activePlan?.plan_json?.weeks) return null;
+
+    const currentWeekNum = activePlan.current_week_num || 1;
+    const currentWeek = activePlan.plan_json.weeks.find((w: PlanWeek) => w.week_number === currentWeekNum);
+
+    if (currentWeek) {
+      return { phase: currentWeek.phase || '', focus: currentWeek.focus || '' };
+    }
+    return null;
+  };
+
+  const currentWeekWorkouts = getCurrentWeekWorkouts();
+  const currentWeekInfo = getCurrentWeekInfo();
 
   return (
     <div className="space-y-8">
@@ -183,8 +237,8 @@ export default function CoachDashboard() {
         <CardHeader>
           <CardTitle>This Week&apos;s Training</CardTitle>
           <CardDescription>
-            {stats?.activePlan
-              ? `${stats.activePlan.plan_type} - Week ${stats.activePlan.current_week_num}`
+            {activePlan
+              ? `${activePlan.plan_type} - Week ${activePlan.current_week_num}`
               : 'No active training plan'}
           </CardDescription>
         </CardHeader>
@@ -195,10 +249,68 @@ export default function CoachDashboard() {
                 <Skeleton key={i} className="h-16 w-full" />
               ))}
             </div>
-          ) : stats?.activePlan ? (
-            <div className="text-muted-foreground">
-              {/* TODO: Display current week workouts */}
-              <p>Training plan workouts will appear here.</p>
+          ) : activePlan && currentWeekWorkouts ? (
+            <div className="space-y-3">
+              {/* Phase/Focus Info */}
+              {currentWeekInfo && (currentWeekInfo.phase || currentWeekInfo.focus) && (
+                <p className="text-sm text-muted-foreground mb-4">
+                  {currentWeekInfo.phase && <span className="font-medium">{currentWeekInfo.phase}</span>}
+                  {currentWeekInfo.phase && currentWeekInfo.focus && ' - '}
+                  {currentWeekInfo.focus && <span className="italic">{currentWeekInfo.focus}</span>}
+                </p>
+              )}
+
+              {/* Workouts Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-2 px-2 font-medium text-muted-foreground">Day</th>
+                      <th className="text-left py-2 px-2 font-medium text-muted-foreground">Workout</th>
+                      <th className="text-left py-2 px-2 font-medium text-muted-foreground">Distance</th>
+                      <th className="text-left py-2 px-2 font-medium text-muted-foreground hidden md:table-cell">Pace</th>
+                      <th className="text-left py-2 px-2 font-medium text-muted-foreground hidden lg:table-cell">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(currentWeekWorkouts).map(([day, workout]) => (
+                      <tr key={day} className="border-b last:border-0 hover:bg-accent/50 transition-colors">
+                        <td className="py-3 px-2 font-medium">{day}</td>
+                        <td className="py-3 px-2">
+                          <Badge variant="outline" className="font-normal">
+                            {typeof workout === 'object' ? workout.type : workout}
+                          </Badge>
+                        </td>
+                        <td className="py-3 px-2 text-muted-foreground">
+                          {typeof workout === 'object' ? (workout.distance || workout.duration || '-') : '-'}
+                        </td>
+                        <td className="py-3 px-2 text-muted-foreground hidden md:table-cell">
+                          {typeof workout === 'object' ? (workout.target_pace || workout.target_hr || '-') : '-'}
+                        </td>
+                        <td className="py-3 px-2 text-muted-foreground text-xs hidden lg:table-cell max-w-[200px] truncate">
+                          {typeof workout === 'object' && workout.description
+                            ? (workout.description.length > 50
+                                ? workout.description.substring(0, 50) + '...'
+                                : workout.description)
+                            : '-'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-xs text-muted-foreground mt-4 italic">
+                Go to Training Plan for full plan details and week navigation
+              </p>
+            </div>
+          ) : activePlan ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p>No workouts found for this week.</p>
+              <p className="text-sm mt-1">
+                Check the Training Plan page for details.
+              </p>
             </div>
           ) : (
             <div className="text-center py-8 text-muted-foreground">
