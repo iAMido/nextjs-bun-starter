@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { TrainingPlan, PlanData } from './types';
+import type { TrainingPlan, PlanData, PlanWeek } from './types';
 
 /**
  * Get the active training plan for a user
@@ -111,7 +111,7 @@ export async function deletePlan(planId: string): Promise<void> {
 /**
  * Get current week's workouts from plan
  */
-export function getCurrentWeekWorkouts(plan: TrainingPlan): PlanData['weeks'][0] | null {
+export function getCurrentWeekWorkouts(plan: TrainingPlan): PlanWeek | null {
   const planData = plan.plan_json as PlanData;
   const currentWeek = plan.current_week_num;
 

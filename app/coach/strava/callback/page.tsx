@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function StravaCallbackPage() {
+function StravaCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -83,5 +83,28 @@ export default function StravaCallbackPage() {
         )}
       </Card>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="flex items-center justify-center gap-2">
+            <Loader2 className="w-6 h-6 animate-spin" />
+            Loading...
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    </div>
+  );
+}
+
+export default function StravaCallbackPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <StravaCallbackContent />
+    </Suspense>
   );
 }

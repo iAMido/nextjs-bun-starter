@@ -4,14 +4,17 @@ import { supabase } from '@/lib/db/supabase';
 import { callOpenRouter } from '@/lib/ai/openrouter';
 import { buildCoachSystemPrompt, buildWeeklyAnalysisPrompt } from '@/lib/ai/coach-prompts';
 
+const DEV_USER_ID = 'idomosseri@gmail.com';
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession();
 
-  if (!session?.user?.email) {
+  const isDev = process.env.NODE_ENV === 'development';
+  if (!session?.user?.email && !isDev) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const userId = session.user.email;
+  const userId = session?.user?.email || DEV_USER_ID;
   const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {

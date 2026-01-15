@@ -75,19 +75,20 @@ export interface TrainingPlan {
 }
 
 export interface PlanData {
-  plan_name: string;
-  methodology: string;
-  goal: string;
-  duration_weeks: number;
-  phase_structure: {
+  plan_name?: string;
+  methodology?: string;
+  goal?: string;
+  duration_weeks?: number;
+  phase_structure?: {
     base_weeks: number;
     support_weeks: number;
     specific_weeks: number;
     taper_weeks: number;
   };
-  weekly_structure: Record<string, string>;
-  weeks: PlanWeek[];
+  weekly_structure?: Record<string, string>;
+  weeks?: PlanWeek[];
   current_week?: PlanWeek;
+  raw_response?: string; // For unparseable AI responses
 }
 
 export interface PlanWeek {
@@ -105,6 +106,7 @@ export interface Workout {
   target_hr?: string;
   target_pace?: string;
   description?: string;
+  notes?: string;
 }
 
 export interface RunFeedback {
