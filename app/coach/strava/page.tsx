@@ -6,8 +6,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
-import { RefreshCw, Link2, Unlink, CheckCircle, AlertCircle, Upload } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { RefreshCw, Link2, Unlink, CheckCircle, AlertCircle, Upload, FileUp } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+
+interface UploadResult {
+  success: boolean;
+  uploaded: number;
+  skipped: number;
+  errors?: string[];
+}
 
 export default function StravaSyncPage() {
   const [loading, setLoading] = useState(true);
@@ -16,6 +23,13 @@ export default function StravaSyncPage() {
   const [disconnecting, setDisconnecting] = useState(false);
   const [daysBack, setDaysBack] = useState('7');
   const [syncResult, setSyncResult] = useState<{ success: boolean; count: number } | null>(null);
+
+  // File upload state
+  const [uploading, setUploading] = useState(false);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     checkStatus();
@@ -75,6 +89,83 @@ export default function StravaSyncPage() {
       setSyncResult({ success: false, count: 0 });
     } finally {
       setSyncing(false);
+    }
+  };
+
+  const handleFileSelect = (files: FileList | null) => {
+    if (!files) return;
+    const fitFiles = Array.from(files).filter(f =>
+      f.name.toLowerCase().endsWith('.fit')
+    );
+    setSelectedFiles(prev => [...prev, ...fitFiles]);
+    setUploadResult(null);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    handleFileSelect(e.dataTransfer.files);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleUpload = async () => {
+    if (selectedFiles.length === 0) return;
+
+    setUploading(true);
+    setUploadResult(null);
+
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach(file => {
+        formData.append('files', file);
+      });
+
+      const response = await fetch('/api/coach/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUploadResult({
+          success: true,
+          uploaded: data.uploaded || 0,
+          skipped: data.skipped || 0,
+          errors: data.errors,
+        });
+        setSelectedFiles([]);
+      } else {
+        setUploadResult({
+          success: false,
+          uploaded: 0,
+          skipped: 0,
+          errors: [data.error || 'Upload failed'],
+        });
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setUploadResult({
+        success: false,
+        uploaded: 0,
+        skipped: 0,
+        errors: ['Network error'],
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -216,19 +307,99 @@ export default function StravaSyncPage() {
               Upload FIT files exported from Garmin or other devices.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center">
-              <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground mb-4">
-                Drag and drop FIT files here, or click to browse.
+          <CardContent className="space-y-4">
+            {/* Drop Zone */}
+            <div
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+                dragOver
+                  ? 'border-blue-500 bg-blue-500/10'
+                  : 'border-muted hover:border-muted-foreground/50'
+              }`}
+            >
+              <Upload className={`w-12 h-12 mx-auto mb-4 ${dragOver ? 'text-blue-500' : 'text-muted-foreground opacity-50'}`} />
+              <p className="text-muted-foreground mb-2">
+                {dragOver ? 'Drop files here...' : 'Drag and drop FIT files here, or click to browse.'}
               </p>
-              <Button variant="outline">
-                Browse Files
-              </Button>
-              <p className="text-xs text-muted-foreground mt-2">
+              <p className="text-xs text-muted-foreground">
                 Supports .fit files from Garmin, Wahoo, and other devices.
               </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".fit,.FIT"
+                multiple
+                className="hidden"
+                onChange={(e) => handleFileSelect(e.target.files)}
+              />
             </div>
+
+            {/* Selected Files */}
+            {selectedFiles.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''} selected:</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedFiles.map((file, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="flex items-center gap-1 cursor-pointer hover:bg-destructive/20"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile(index);
+                      }}
+                    >
+                      <FileUp className="w-3 h-3" />
+                      {file.name}
+                      <span className="ml-1 text-muted-foreground">×</span>
+                    </Badge>
+                  ))}
+                </div>
+                <Button
+                  onClick={handleUpload}
+                  disabled={uploading}
+                  className="w-full bg-gradient-to-r from-blue-500 to-green-500 text-white"
+                >
+                  <Upload className={`w-4 h-4 mr-2 ${uploading ? 'animate-pulse' : ''}`} />
+                  {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} File${selectedFiles.length !== 1 ? 's' : ''}`}
+                </Button>
+              </div>
+            )}
+
+            {/* Upload Result */}
+            {uploadResult && (
+              <Alert variant={uploadResult.success && uploadResult.uploaded > 0 ? 'default' : uploadResult.success ? 'default' : 'destructive'}>
+                {uploadResult.success ? (
+                  <CheckCircle className="h-4 w-4" />
+                ) : (
+                  <AlertCircle className="h-4 w-4" />
+                )}
+                <AlertTitle>
+                  {uploadResult.success ? 'Upload Complete' : 'Upload Failed'}
+                </AlertTitle>
+                <AlertDescription>
+                  {uploadResult.success ? (
+                    <span>
+                      Uploaded {uploadResult.uploaded} run{uploadResult.uploaded !== 1 ? 's' : ''}.
+                      {uploadResult.skipped > 0 && ` Skipped ${uploadResult.skipped} duplicate${uploadResult.skipped !== 1 ? 's' : ''}.`}
+                    </span>
+                  ) : null}
+                  {uploadResult.errors && uploadResult.errors.length > 0 && (
+                    <ul className="mt-1 text-xs list-disc list-inside">
+                      {uploadResult.errors.slice(0, 3).map((err, i) => (
+                        <li key={i}>{err}</li>
+                      ))}
+                      {uploadResult.errors.length > 3 && (
+                        <li>...and {uploadResult.errors.length - 3} more</li>
+                      )}
+                    </ul>
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
           </CardContent>
         </Card>
       </div>
