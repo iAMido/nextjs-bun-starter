@@ -14,27 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
-  description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers to create transformative experiences. AWS AI Superstar, GitHub Star, Founder of YUV.AI Community.",
-  keywords: ["Yuval Avidani", "YUV.AI", "AI Builder", "AI Speaker", "Machine Learning", "Developer", "AWS AI Superstar", "GitHub Star"],
-  authors: [{ name: "Yuval Avidani", url: "https://yuv.ai" }],
+  title: "Running Coach | AI-Powered Training",
+  description: "Your personal AI running coach. Track runs, get training plans, analyze performance, and connect with Strava.",
+  keywords: ["Running Coach", "AI Coach", "Training Plan", "Strava", "Running", "Fitness"],
+  authors: [{ name: "Ido Mosseri" }],
   icons: {
-    icon: [
-      { url: "/round-avatar.svg", type: "image/svg+xml" },
-    ],
-    apple: "/round-avatar.svg",
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
-    description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers to create transformative experiences.",
+    title: "Running Coach | AI-Powered Training",
+    description: "Your personal AI running coach. Track runs, get training plans, and analyze performance.",
     type: "website",
-    url: "https://yuv.ai",
   },
   twitter: {
     card: "summary_large_image",
-    title: "YUV.AI | Yuval Avidani - AI Builder & Speaker",
-    description: "Innovating AI & Development. Building next-generation AI solutions and empowering developers.",
-    creator: "@yuvai",
+    title: "Running Coach | AI-Powered Training",
+    description: "Your personal AI running coach. Track runs, get training plans, and analyze performance.",
   },
 };
 
