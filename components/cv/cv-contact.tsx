@@ -13,27 +13,27 @@ export function CVContact() {
         <div className="space-y-4 max-w-md">
           <a
             href={`tel:${contact.phone}`}
-            className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+            className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
           >
-            <Phone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            <span className="text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            <Phone className="h-6 w-6 text-blue-600" />
+            <span className="text-slate-700 group-hover:text-blue-600">
               {contact.phone}
             </span>
           </a>
 
           <a
             href={`mailto:${contact.email}`}
-            className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+            className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
           >
-            <Mail className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            <span className="text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            <Mail className="h-6 w-6 text-blue-600" />
+            <span className="text-slate-700 group-hover:text-blue-600">
               {contact.email}
             </span>
           </a>
 
-          <div className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-            <MapPin className="h-6 w-6 text-slate-600 dark:text-slate-400" />
-            <span className="text-slate-700 dark:text-slate-300">
+          <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg">
+            <MapPin className="h-6 w-6 text-slate-600" />
+            <span className="text-slate-700">
               {contact.location}
             </span>
           </div>

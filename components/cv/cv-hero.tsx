@@ -10,25 +10,25 @@ export function CVHero() {
     <section className="cv-section py-12 md:py-20">
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-2">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-2">
             {personal.name}
           </h1>
-          <p className="text-xl md:text-2xl text-blue-600 dark:text-blue-400 font-medium">
+          <p className="text-xl md:text-2xl text-blue-600 font-medium">
             {personal.title}
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 text-slate-600 dark:text-slate-300">
+        <div className="flex flex-col gap-3 text-slate-600">
           <a
             href={`tel:${personal.phone}`}
-            className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="flex items-center gap-2 hover:text-blue-600 transition-colors"
           >
             <Phone className="h-5 w-5" />
             <span>{personal.phone}</span>
           </a>
           <a
             href={`mailto:${personal.email}`}
-            className="flex items-center gap-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="flex items-center gap-2 hover:text-blue-600 transition-colors"
           >
             <Mail className="h-5 w-5" />
             <span>{personal.email}</span>
@@ -48,7 +48,7 @@ export function CVHero() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                className="p-3 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
                 aria-label={social.name}
               >
                 <Icon className="h-5 w-5" />

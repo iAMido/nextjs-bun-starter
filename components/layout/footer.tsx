@@ -21,15 +21,15 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="contact" className="py-12 px-6 bg-slate-900 dark:bg-slate-950">
+    <footer id="contact" className="py-12 px-6 bg-slate-100 border-t border-slate-200">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col items-center gap-8">
           {/* Logo and Tagline */}
           <div className="flex flex-col items-center gap-3">
-            <Link href="/" className="text-xl font-semibold text-white hover:text-blue-400 transition-colors">
+            <Link href="/" className="text-xl font-semibold text-slate-900 hover:text-blue-600 transition-colors">
               Ido Mosseri
             </Link>
-            <p className="text-white/50 text-sm">Technical SEO Lead</p>
+            <p className="text-slate-500 text-sm">Technical SEO Lead</p>
           </div>
 
           {/* Navigation Links */}
@@ -38,7 +38,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-white/60 hover:text-blue-400 transition-colors"
+                className="text-sm text-slate-600 hover:text-blue-600 transition-colors"
               >
                 {link.label}
               </Link>
@@ -55,7 +55,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
+                  className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:text-blue-600 hover:bg-blue-100 transition-all"
                   aria-label={social.label}
                 >
                   <IconComponent className="w-5 h-5" />
@@ -65,8 +65,8 @@ export function Footer() {
           </div>
 
           {/* Copyright */}
-          <div className="pt-4 border-t border-white/10 w-full text-center">
-            <p className="text-sm text-white/40">
+          <div className="pt-4 border-t border-slate-200 w-full text-center">
+            <p className="text-sm text-slate-500">
               &copy; {currentYear} Ido Mosseri. All rights reserved.
             </p>
           </div>

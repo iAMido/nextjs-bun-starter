@@ -16,22 +16,22 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Running Coach | AI-Powered Training",
-  description: "Your personal AI running coach. Track runs, get training plans, analyze performance, and connect with Strava.",
-  keywords: ["Running Coach", "AI Coach", "Training Plan", "Strava", "Running", "Fitness"],
+  title: "Ido Mosseri | Product & SEO Optimization Expert",
+  description: "Technical SEO Lead with 10+ years of experience driving organic growth, search optimization, and product strategy. Specializing in enterprise SEO, data-driven insights, and AI-powered solutions.",
+  keywords: ["Technical SEO", "Product Optimization", "Search Optimization", "SEO Expert", "Organic Growth", "Ido Mosseri"],
   authors: [{ name: "Ido Mosseri" }],
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Running Coach | AI-Powered Training",
-    description: "Your personal AI running coach. Track runs, get training plans, and analyze performance.",
+    title: "Ido Mosseri | Product & SEO Optimization Expert",
+    description: "Technical SEO Lead with 10+ years of experience driving organic growth, search optimization, and product strategy.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Running Coach | AI-Powered Training",
-    description: "Your personal AI running coach. Track runs, get training plans, and analyze performance.",
+    title: "Ido Mosseri | Product & SEO Optimization Expert",
+    description: "Technical SEO Lead with 10+ years of experience driving organic growth, search optimization, and product strategy.",
   },
 };
 

@@ -13,7 +13,6 @@ import { CVContact } from '@/components/cv/cv-contact'
 import { CVSidebar } from '@/components/cv/cv-sidebar'
 import { Footer } from '@/components/layout/footer'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
-import { ModeToggle } from '@/components/ui/mode-toggle'
 import { Button } from '@/components/ui/button'
 import { LogIn, User } from 'lucide-react'
 
@@ -25,12 +24,11 @@ export default function Home() {
       {/* CV Header with Navigation */}
       <header className="cv-header">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h1 className="text-lg font-bold text-slate-900">
             Ido Mosseri
           </h1>
           <div className="flex items-center gap-4">
             <CVNavigation />
-            <ModeToggle />
             {session ? (
               <div className="flex items-center gap-2">
                 <Link href="/coach" className="text-sm font-medium text-[#2563EB] hover:underline hidden sm:block">

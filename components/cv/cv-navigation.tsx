@@ -31,7 +31,7 @@ export function CVNavigation() {
           <button
             key={item.href}
             onClick={() => scrollToSection(item.href)}
-            className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
           >
             {item.label}
           </button>
@@ -45,21 +45,21 @@ export function CVNavigation() {
         aria-label="Toggle menu"
       >
         {mobileMenuOpen ? (
-          <X className="h-6 w-6 text-slate-700 dark:text-slate-300" />
+          <X className="h-6 w-6 text-slate-700" />
         ) : (
-          <Menu className="h-6 w-6 text-slate-700 dark:text-slate-300" />
+          <Menu className="h-6 w-6 text-slate-700" />
         )}
       </button>
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 shadow-lg md:hidden z-50">
+        <div className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-slate-200 shadow-lg md:hidden z-50">
           <div className="flex flex-col p-4 space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => scrollToSection(item.href)}
-                className="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors"
+                className="text-left px-4 py-3 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
               >
                 {item.label}
               </button>
