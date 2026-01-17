@@ -22,21 +22,23 @@ function StatsCard({
   loading?: boolean;
 }) {
   return (
-    <Card>
+    <Card className="coach-card stat-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
+        <CardTitle className="metric-label">
           {title}
         </CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="p-2 rounded-lg bg-primary/10">
+          <Icon className="h-4 w-4 text-primary" />
+        </div>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <Skeleton className="h-8 w-20" />
+          <Skeleton className="h-10 w-24" />
         ) : (
           <>
-            <div className="text-2xl font-bold">{value}</div>
+            <div className="metric-value text-3xl">{value}</div>
             {description && (
-              <p className="text-xs text-muted-foreground">{description}</p>
+              <p className="text-sm text-muted-foreground mt-1">{description}</p>
             )}
           </>
         )}
@@ -142,10 +144,10 @@ export default function CoachDashboard() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h1 className="coach-heading text-3xl tracking-tight">
           Welcome back, {session?.user?.name?.split(' ')[0] || 'Coach'}
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-muted-foreground mt-2">
           Here&apos;s your training overview for today.
         </p>
       </div>
@@ -183,47 +185,47 @@ export default function CoachDashboard() {
       </div>
 
       {/* Recent Runs */}
-      <Card>
+      <Card className="coach-card">
         <CardHeader>
-          <CardTitle>Recent Runs</CardTitle>
+          <CardTitle className="coach-heading text-xl">Recent Runs</CardTitle>
           <CardDescription>Your runs from the last 14 days</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="space-y-2">
+            <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full" />
+                <Skeleton key={i} className="h-16 w-full rounded-lg" />
               ))}
             </div>
           ) : recentRuns.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {recentRuns.map((run) => (
                 <div
                   key={run.id}
-                  className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                  className="run-list-item flex items-center justify-between"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-full bg-primary/10">
-                      <Activity className="w-4 h-4 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20">
+                      <Activity className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">{run.workout_name || run.run_type || 'Run'}</p>
+                      <p className="font-semibold">{run.workout_name || run.run_type || 'Run'}</p>
                       <p className="text-sm text-muted-foreground">
                         {new Date(run.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{run.distance_km?.toFixed(1)} km</p>
-                    <p className="text-sm text-muted-foreground">{run.avg_pace_str || '-'}</p>
+                    <p className="metric-value text-lg">{run.distance_km?.toFixed(1)} km</p>
+                    <p className="text-sm text-muted-foreground font-mono">{run.avg_pace_str || '-'}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
-              <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No runs yet.</p>
+            <div className="empty-state">
+              <Activity className="empty-state-icon" />
+              <p className="font-medium">No runs yet</p>
               <p className="text-sm mt-1">
                 Connect Strava or log a run manually to get started.
               </p>
@@ -233,9 +235,9 @@ export default function CoachDashboard() {
       </Card>
 
       {/* This Week's Training */}
-      <Card>
+      <Card className="coach-card">
         <CardHeader>
-          <CardTitle>This Week&apos;s Training</CardTitle>
+          <CardTitle className="coach-heading text-xl">This Week&apos;s Training</CardTitle>
           <CardDescription>
             {activePlan
               ? `${activePlan.plan_type} - Week ${activePlan.current_week_num}`
